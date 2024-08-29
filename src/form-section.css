@@ -1,0 +1,62 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+.form-section {
+    flex: 1;
+    outline: solid black;
+    overflow-y: auto;
+}
+
+.fill-out {
+    font-size: 30px;
+    padding: 0.2em;
+}
+
+.personal-info-title, .experience-title, .education-title {
+    margin-top: 1em;
+    font-size: 20px;
+}
+
+.personal-info-container, .experience-container, .education-container {
+    padding: 1em 2em 0em 2em;
+}
+
+.name-inputs, .number-email-inputs, .location-inputs {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.current-job-inputs {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column; /* Stack job inputs vertically */
+    align-items: start; /* Center items horizontally if needed */ 
+}
+
+.currentJob, .jobDescription {
+    margin: 0.5em 0; /* Optional: space between vertically stacked items */
+}
+
+#jobDescription {
+    height: 40px;
+}
+
+.experience-inputs, .education-inputs {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 0.5em;
+}
+
+.submitExperience, .submitEducation {
+    font-size: 18px;
+    margin: 1.5em;
+    display: flex;
+    align-self: center;
+}
