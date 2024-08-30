@@ -1,6 +1,8 @@
 import './form-section.css'
 
-export default function FormSection() {
+// eslint-disable-next-line react/prop-types
+export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription}) {
+
     return (
         <>
         <div className="form-section">
@@ -13,50 +15,51 @@ export default function FormSection() {
                 <div className="name-inputs">
                     <div className='forenameInput'>
                         <label htmlFor="forename">Forename</label>
-                        <input type="text" id='forename' name='forename' />
+                        <input type="text" id='forename' name='forename' defaultValue={firstName} onChange={(event) =>  setFirstName(event.target.value)} />
                     </div>
                     
                     <div className='surnameInput'>
                         <label htmlFor="surname">Surname</label>
-                        <input type="text" id='surname' name='urname' /> 
+                        <input type="text" id='surname' name='surname' defaultValue={surname} onChange={(event) =>  setSurname(event.target.value)}/> 
                     </div>
                 </div>
 
                 <div className="number-email-inputs">
                     <div className='numberInput'>
                         <label htmlFor="numberInput">Number</label>
-                        <input type="text" id='numberInput' name='numberInput' />
+                        <input type="text" id='numberInput' name='numberInput' defaultValue={number} onChange={(event) =>  setNumber(event.target.value)}/>
                     </div>
                     
                     <div className='emailInput'>
                         <label htmlFor="emailInput">E-mail</label>
-                        <input type="text" id='emailInput' name='emailInput' /> 
+                        <input type="text" id='emailInput' name='emailInput' defaultValue={email} onChange={(event) =>  setEmail(event.target.value)}/> 
                     </div>
                 </div>
 
                 <div className="location-inputs">
                     <div className='cityInput'>
                         <label htmlFor="cityInput">City</label>
-                        <input type="text" id='cityInput' name='cityInput' />
+                        <input type="text" id='cityInput' name='cityInput' defaultValue={city} onChange={(event) =>  setCity(event.target.value)}/>
                     </div>
                     
                     <div className='townInput'>
                         <label htmlFor="townInput">Town</label>
-                        <input type="text" id='townInput' name='townInput' /> 
+                        <input type="text" id='townInput' name='townInput' defaultValue={town} onChange={(event) =>  setTown(event.target.value)}/> 
                     </div>
                 </div>
 
                 <div className="current-job-inputs">
                     <div className='currentJob'>
                         <label htmlFor="currentJob">Current occupation</label>
-                        <input type="text" id='currentJob' name='currentJob' />
+                        <input type="text" id='currentJob' name='currentJob' defaultValue={'Financial Consultant'} onChange={(event) =>  setOccupation(event.target.value)}/>
                     </div>
                     
                     <div className='jobDescription'>
                         <label htmlFor="jobDescription">Job description</label>
-                        <input type="text" id='jobDescription' name='jobDescription' /> 
+                        <input type="text" id='jobDescription' name='jobDescription' defaultValue={'I work with clients to ensure their financial goals are met in an efficient and stress free way!'} onChange={(event) =>  setJobDescription(event.target.value)}/> 
                     </div>
                 </div>
+                <hr />
             </div>
                 <div className="experience-container">
                     <div className='experience-title'>Experience</div>
@@ -79,7 +82,9 @@ export default function FormSection() {
 
                         <button className='submitExperience'>Submit experience</button>
                     </div>
+                    <hr />
                 </div>
+
 
                 <div className="education-container">
                     <div className='education-title'>Education</div>

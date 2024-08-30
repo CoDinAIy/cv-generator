@@ -8,9 +8,5 @@ import FormSection from './form-section.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    <div className="container">
-      <FormSection />
-      <CvSection />
-    </div>
   </StrictMode>,
 )
