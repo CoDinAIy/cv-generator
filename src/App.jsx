@@ -13,7 +13,11 @@ function App() {
   const [occupation, setOccupation] = useState('Financial Consultant')
   const [jobDescription, setJobDescription] = useState('I work with clients to ensure their financial goals are met in an efficient and stress free way!')
 
+  const [experiences, setExperiences] = useState([])
 
+  const addExperience = (experience) => {
+    setExperiences([...experiences, experience])
+  }
 
 
   return (
@@ -40,9 +44,11 @@ function App() {
      setOccupation={setOccupation}
      jobDescription={jobDescription}
      setJobDescription={setJobDescription}
+     onExperience={addExperience}
+     experiences={experiences}
       />
       
-    <CvSection firstName={firstName} surname={surname} number={number} email={email} city={city} town={town} occupation={occupation} jobDescription={jobDescription}/>
+    <CvSection firstName={firstName} surname={surname} number={number} email={email} city={city} town={town} occupation={occupation} jobDescription={jobDescription} experiences={experiences}/>
     </div>
     </>
   )

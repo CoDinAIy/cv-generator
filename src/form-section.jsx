@@ -1,7 +1,63 @@
 import './form-section.css'
+import { useState } from 'react';
+function Input({name, text, type, value, setter}) {
+    return (
+        <div className={`${name}Input`}>
+            <label htmlFor={name}>{text ? text : `${name[0].toUpperCase()}${name.slice(1)}`}</label>
+            <input required type={type} id={name} name={name} defaultValue={value} onChange={setter ? (event) => setter(event.target.value) : undefined}/>
+        </div>
+    )
+}
+
+function ShowExperiencesForm({experiences}) {
+    return (
+        experiences.map((experience) => {
+            return <div key={experience}>
+                {experience.position}
+            </div>
+        })
+
+    )
+}
 
 // eslint-disable-next-line react/prop-types
-export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription}) {
+export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription, onExperience, experiences}) {
+    
+        const [position, setPosition] = useState('');
+        const [company, setCompany] = useState('');
+        const [startDateExperiences, setStartDateExperiences] = useState('');
+        const [endDateExperiences, setEndDateExperiences] = useState('');
+        const [descriptionExperiences, setDescriptionExperiences] = useState('');
+    
+        const [educationLevel, setEducationLevel] = useState('');
+        const [institute, setInstitute] = useState('');
+        const [startDateEducation, setStartDateEducation] = useState('');
+        const [endDateEducation, setEndDateEducation] = useState('');
+        const [descriptionEducation, setDescriptionEducation] = useState('');
+
+  
+    const handleExperiences = (event) => {
+        event.preventDefault()
+        const newExperience = {position, company, startDateExperiences, endDateExperiences, descriptionExperiences}
+        onExperience(newExperience)
+
+        console.log('new experience =')
+        console.log(newExperience)
+        console.log('updated experience =')
+        console.log(experiences)
+    }
+
+
+    const handleEducation = (event) => {
+        event.preventDefault()
+        console.log({
+            educationLevel,
+            institute,
+            startDateEducation,
+            endDateEducation,
+            descriptionEducation,
+        })
+    }
 
     return (
         <>
@@ -9,106 +65,71 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
 
             <div className='fill-out'>FILL OUT</div>
 
-            <div className='personal-info-container'>
+            <form action='#' method='get' className='personal-info-container'>
                 <div className='personal-info-title'>Personal Information</div>
 
                 <div className="name-inputs">
-                    <div className='forenameInput'>
-                        <label htmlFor="forename">Forename</label>
-                        <input type="text" id='forename' name='forename' defaultValue={firstName} onChange={(event) =>  setFirstName(event.target.value)} />
-                    </div>
-                    
-                    <div className='surnameInput'>
-                        <label htmlFor="surname">Surname</label>
-                        <input type="text" id='surname' name='surname' defaultValue={surname} onChange={(event) =>  setSurname(event.target.value)}/> 
-                    </div>
+                    <Input name='forename' type='text' value={firstName} setter={setFirstName}></Input>
+                    <Input name='surname' type='text' value={surname} setter={setSurname}></Input>                            
                 </div>
 
                 <div className="number-email-inputs">
-                    <div className='numberInput'>
-                        <label htmlFor="numberInput">Number</label>
-                        <input type="text" id='numberInput' name='numberInput' defaultValue={number} onChange={(event) =>  setNumber(event.target.value)}/>
-                    </div>
-                    
-                    <div className='emailInput'>
-                        <label htmlFor="emailInput">E-mail</label>
-                        <input type="text" id='emailInput' name='emailInput' defaultValue={email} onChange={(event) =>  setEmail(event.target.value)}/> 
-                    </div>
+                    <Input name='number' type='text' value={number} setter={setNumber}></Input>
+                    <Input name='email' type='email' value={email} setter={setEmail}></Input>
                 </div>
 
                 <div className="location-inputs">
-                    <div className='cityInput'>
-                        <label htmlFor="cityInput">City</label>
-                        <input type="text" id='cityInput' name='cityInput' defaultValue={city} onChange={(event) =>  setCity(event.target.value)}/>
-                    </div>
-                    
-                    <div className='townInput'>
-                        <label htmlFor="townInput">Town</label>
-                        <input type="text" id='townInput' name='townInput' defaultValue={town} onChange={(event) =>  setTown(event.target.value)}/> 
-                    </div>
+                    <Input name='city' type='text' value={city} setter={setCity}></Input>
+                    <Input name='town' type='text' value={town} setter={setTown}></Input>
                 </div>
 
                 <div className="current-job-inputs">
-                    <div className='currentJob'>
-                        <label htmlFor="currentJob">Current occupation</label>
-                        <input type="text" id='currentJob' name='currentJob' defaultValue={'Financial Consultant'} onChange={(event) =>  setOccupation(event.target.value)}/>
-                    </div>
-                    
-                    <div className='jobDescription'>
-                        <label htmlFor="jobDescription">Job description</label>
-                        <input type="text" id='jobDescription' name='jobDescription' defaultValue={'I work with clients to ensure their financial goals are met in an efficient and stress free way!'} onChange={(event) =>  setJobDescription(event.target.value)}/> 
-                    </div>
+                    <Input name='currentJob' text='Current occupation' type='text' value={occupation} setter={setOccupation}></Input>
+                    <Input name='jobDescription' text='Job description' type='text' value={jobDescription} setter={setJobDescription}></Input>
                 </div>
                 <hr />
-            </div>
-                <div className="experience-container">
-                    <div className='experience-title'>Experience</div>
+            </form>
 
-                    <div className="experience-inputs">
-                        <label htmlFor="position">Position</label>
-                        <input type="text" id='position' name='position' />
+            <form action='#' method='get' className="experience-container">
+                <div className='experience-title'>Experience</div>
+                <div className="experience-inputs">
+                    <Input name='position' type='text' setter={setPosition}></Input>
+                    <Input name='company' type='text' setter={setCompany}></Input>
+                    <Input name='startDateExperience' text='Start date' type='date' setter={setStartDateExperiences}></Input>
+                    <Input name='endDateExperience' text='End date' type='date' setter={setEndDateExperiences}></Input>
+                    <Input name='descriptionExperience' text='Description' type='text' setter={setDescriptionExperiences}></Input>
+                    <button type='submit' className='submitExperience' onClick={handleExperiences}>Submit experience</button>
+                    <ShowExperiencesForm experiences={experiences}/>
+                </div>
+                <hr />
+            </form>
 
-                        <label htmlFor="company">Company</label>
-                        <input type="date" id='company' name='company' />
 
-                        <label htmlFor="startDateExperience">Start date</label>
-                        <input type="date" id='startDateExperience' name='startDateExperience' />
+            <form action='#' method='get' className="education-container" onSubmit={handleEducation}>
+                <div className='education-title'>Education</div>
 
-                        <label htmlFor="endDateExperience">End date</label>
-                        <input type="text" id='endDateExperience' name='endDateExperience' />
+                <div className="education-inputs">
 
-                        <label htmlFor="descriptionExperience">Experience</label>
-                        <input type="text" id='descriptionExperience' name='descriptionExperience' />
-
-                        <button className='submitExperience'>Submit experience</button>
-                    </div>
-                    <hr />
+                <div className='educationLevelInput'>
+                    <label htmlFor='educationLevel'>Level of education</label>
+                    <select name="educationLevel" id="educationLevel" onChange={setEducationLevel}>
+                        <option value="choose-option">--Choose an option--</option>
+                        <option value="high-school">GCSE &#40;or equivalent&#41;</option>
+                        <option value="college">A-levels &#40;or equivalent&#41;</option>
+                        <option value="bachelors">Bachelors degree</option>
+                        <option value="masters">Masters degree</option>
+                        <option value="phd">Phd</option>
+                        <option value="other">Other</option>
+                    </select>
                 </div>
 
-
-                <div className="education-container">
-                    <div className='education-title'>Education</div>
-
-                    <div className="education-inputs">
-
-                        <label htmlFor="educationLevel">Level of education</label>
-                        <input type="text" id='educationLevel' name='educationLevel' />
-
-                        <label htmlFor="institute">Institute</label>
-                        <input type="date" id='institute' name='institute' />
-
-                        <label htmlFor="startDateEducation">Start Date</label>
-                        <input type="date" id='startDateEducation' name='startDateEducation' />
-
-                        <label htmlFor="endDateEducation">End Date</label>
-                        <input type="text" id='endDateEducation' name='endDateEducation' />
-
-                        <label htmlFor="descriptionEducation">Description</label>
-                        <input type="text" id='descriptionEducation' name='descriptionEducation' />
-
-                        <button className='submitEducation'>Submit education</button>
-                    </div>
+                    <Input name='institute' type='text' setter={setInstitute}></Input>
+                    <Input name='startDateEducation' text='Start date' type='date' setter={setStartDateEducation}></Input>
+                    <Input name='endDateEducation' text='End date' type='date' setter={setEndDateEducation}></Input>
+                    <Input name='descriptionEducation' text='Description' type='text' setter={setDescriptionEducation}></Input>
+                    <button type='submit' className='submitEducation'>Submit education</button>
                 </div>
+            </form>
         </div>
         </>
     )
