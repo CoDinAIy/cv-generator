@@ -8,10 +8,6 @@ function Information(props) {
 
 function ShowExperiencesCV({experiences}) {
 
-    console.log('experiences to list =')
-    console.log(experiences)
-
-
     if (!Array.isArray(experiences)) {
         return <li className='listItem'>Add experiences here</li>;
     }
@@ -24,10 +20,10 @@ function ShowExperiencesCV({experiences}) {
         <>
             {experiences.map((experience, index) => {
                 return  <li className='listItem' key={index}>
-                            <div>{experience.startDateExperiences} to {experience.endDateExperiences}</div>
-                            <div>{experience.position} at {experience.company}</div>
-                            <div>{experience.descriptionExperiences}</div>
-                        </li>
+                    <div>{experience.startDateExperiences} to {experience.endDateExperiences}</div>
+                    <div>{experience.position} at {experience.company}</div>
+                    <div>{experience.descriptionExperiences}</div>
+                </li>
             })}
         </>
     )
@@ -35,9 +31,6 @@ function ShowExperiencesCV({experiences}) {
 
 // eslint-disable-next-line react/prop-types
 export default function CvSection({firstName, surname, number, email, city, town, occupation, jobDescription, experiences}) {
-
-    console.log('experiences to pass')
-    console.log(experiences)
 
     return (
         <div className="cv-section">

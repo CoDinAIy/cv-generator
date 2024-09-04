@@ -1,27 +1,93 @@
 import './form-section.css'
 import { useState } from 'react';
+
+
 function Input({name, text, type, value, setter}) {
     return (
         <div className={`${name}Input`}>
             <label htmlFor={name}>{text ? text : `${name[0].toUpperCase()}${name.slice(1)}`}</label>
-            <input required type={type} id={name} name={name} defaultValue={value} onChange={setter ? (event) => setter(event.target.value) : undefined}/>
+            <input required type={type} id={name} name={name} value={value} onChange={(event) => setter(event.target.value)}/>
         </div>
     )
 }
 
-function ShowExperiencesForm({experiences}) {
-    return (
-        experiences.map((experience) => {
-            return <div key={experience}>
-                {experience.position}
-            </div>
-        })
+function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompany, setStartDateExperiences, setEndDateExperiences, setDescriptionExperiences, editMode, setEditMode}) {
 
-    )
-}
+    console.log(`editmode is ${editMode}`)
+    const DeleteExperience = (event, experiences, experience, setExperiences) => {
+        event.preventDefault()
+    
+        const newExperiences = experiences.filter(exp => exp !== experience)
+    
+        setExperiences(newExperiences)
+
+        setPosition('')
+        setCompany('')
+        setStartDateExperiences('')
+        setEndDateExperiences('')
+        setDescriptionExperiences('')
+    
+    }
+    
+    const EditExperience = (event, experience, setExperiences, editMode, setEditMode) => {
+        
+        event.preventDefault()
+
+        setPosition(experience.position)
+        setCompany(experience.company)
+        setStartDateExperiences(experience.startDateExperiences)
+        setEndDateExperiences(experience.endDateExperiences)
+        setDescriptionExperiences(experience.descriptionExperiences)
+
+        if (experience.isEditing) {
+            experience.isEditing = false
+            setEditMode(false)
+        } else {
+            experience.isEditing = true
+            setEditMode(true)
+        }
+
+        setExperiences(prev => prev.map(exp => exp.position === experience.position ? experience : exp))
+
+        experiences.map((experience) => {
+            {experience.isEditing === true ? console.log('editing') : console.log('done')}
+        })
+        console.log(experiences)
+        console.log(editMode)
+
+    }
+    return (
+        experiences.map((experience) => (
+                <div key={experience.position}>
+                {experience.position}
+                
+                {!editMode ? 
+                (
+                    <>
+                        <button 
+                            onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className={experience.position}>{experience.isEditing === false ? 'Edit' : 'Done'}
+                        </button>
+                        <button 
+                            onClick={(event) => DeleteExperience(event, experiences, experience, setExperiences)} key={experience.position} className={experience.position}>X
+                        </button>
+                    </>
+                ) 
+                : (
+                    experience.isEditing && 
+                    (
+                        <>
+                            <button 
+                                onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className={experience.position}>{experience.isEditing === false ? 'Edit' : 'Done'}
+                            </button>
+                        </>
+                    )   
+                )}
+            </div>
+        ))
+    )}
 
 // eslint-disable-next-line react/prop-types
-export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription, onExperience, experiences}) {
+export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription, onExperience, experiences, setExperiences}) {
     
         const [position, setPosition] = useState('');
         const [company, setCompany] = useState('');
@@ -35,20 +101,32 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
         const [endDateEducation, setEndDateEducation] = useState('');
         const [descriptionEducation, setDescriptionEducation] = useState('');
 
-  
-    const handleExperiences = (event) => {
-        event.preventDefault()
-        const newExperience = {position, company, startDateExperiences, endDateExperiences, descriptionExperiences}
-        onExperience(newExperience)
+        const [editMode, setEditMode] = useState(false)
 
-        console.log('new experience =')
-        console.log(newExperience)
-        console.log('updated experience =')
-        console.log(experiences)
+  
+    const HandleExperiences = (event) => {
+        event.preventDefault()
+
+            const newExperience = {
+                position, 
+                company, 
+                startDateExperiences, 
+                endDateExperiences, 
+                descriptionExperiences,
+                isEditing: false,
+            }
+            onExperience(newExperience)
+
+            setPosition('')
+            setCompany('')
+            setStartDateExperiences('')
+            setEndDateExperiences('')
+            setDescriptionExperiences('')
+            console.log(editMode)
     }
 
 
-    const handleEducation = (event) => {
+    const HandleEducation = (event) => {
         event.preventDefault()
         console.log({
             educationLevel,
@@ -90,22 +168,31 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                 <hr />
             </form>
 
-            <form action='#' method='get' className="experience-container">
+            <form onSubmit={HandleExperiences} action='#' method='get' className="experience-container">
                 <div className='experience-title'>Experience</div>
                 <div className="experience-inputs">
-                    <Input name='position' type='text' setter={setPosition}></Input>
-                    <Input name='company' type='text' setter={setCompany}></Input>
-                    <Input name='startDateExperience' text='Start date' type='date' setter={setStartDateExperiences}></Input>
-                    <Input name='endDateExperience' text='End date' type='date' setter={setEndDateExperiences}></Input>
-                    <Input name='descriptionExperience' text='Description' type='text' setter={setDescriptionExperiences}></Input>
-                    <button type='submit' className='submitExperience' onClick={handleExperiences}>Submit experience</button>
-                    <ShowExperiencesForm experiences={experiences}/>
+                    <Input name='position' type='text' setter={setPosition} value={position}></Input>
+                    <Input name='company' type='text' setter={setCompany} value={company}></Input>
+                    <Input name='startDateExperience' text='Start date' type='date' setter={setStartDateExperiences} value={startDateExperiences}></Input>
+                    <Input name='endDateExperience' text='End date' type='date' setter={setEndDateExperiences} value={endDateExperiences}></Input>
+                    <Input name='descriptionExperience' text='Description' type='text' setter={setDescriptionExperiences} value={descriptionExperiences}></Input>
+                    <button type='submit' className='submitExperience'>Submit experience</button>
+                    <ShowExperiencesForm 
+                    experiences={experiences} 
+                    setExperiences={setExperiences} 
+                    setPosition={setPosition} 
+                    setCompany={setCompany} 
+                    setStartDateExperiences={setStartDateExperiences} 
+                    setEndDateExperiences={setEndDateExperiences} 
+                    setDescriptionExperiences={setDescriptionExperiences}
+                    editMode={editMode}
+                    setEditMode={setEditMode}/>
                 </div>
                 <hr />
             </form>
 
 
-            <form action='#' method='get' className="education-container" onSubmit={handleEducation}>
+            <form action='#' method='get' className="education-container" onSubmit={HandleEducation}>
                 <div className='education-title'>Education</div>
 
                 <div className="education-inputs">

@@ -46,6 +46,7 @@ function App() {
      setJobDescription={setJobDescription}
      onExperience={addExperience}
      experiences={experiences}
+     setExperiences={setExperiences}
       />
       
     <CvSection firstName={firstName} surname={surname} number={number} email={email} city={city} town={town} occupation={occupation} jobDescription={jobDescription} experiences={experiences}/>
