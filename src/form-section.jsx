@@ -2,6 +2,7 @@ import './form-section.css'
 import { useState } from 'react';
 
 
+// eslint-disable-next-line react/prop-types
 function Input({name, text, type, value, setter}) {
     return (
         <div className={`${name}Input`}>
@@ -11,9 +12,8 @@ function Input({name, text, type, value, setter}) {
     )
 }
 
-function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompany, setStartDateExperiences, setEndDateExperiences, setDescriptionExperiences, editMode, setEditMode}) {
+function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompany, setStartDateExperiences, setEndDateExperiences, setDescriptionExperiences, editMode, setEditMode, position, company, startDateExperiences, endDateExperiences, descriptionExperiences}) {
 
-    console.log(`editmode is ${editMode}`)
     const DeleteExperience = (event, experiences, experience, setExperiences) => {
         event.preventDefault()
     
@@ -29,47 +29,67 @@ function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompa
     
     }
     
-    const EditExperience = (event, experience, setExperiences, editMode, setEditMode) => {
-        
-        event.preventDefault()
-
-        setPosition(experience.position)
-        setCompany(experience.company)
-        setStartDateExperiences(experience.startDateExperiences)
-        setEndDateExperiences(experience.endDateExperiences)
-        setDescriptionExperiences(experience.descriptionExperiences)
-
-        if (experience.isEditing) {
-            experience.isEditing = false
-            setEditMode(false)
+    const EditExperience = (event, experience) => {
+        event.preventDefault();
+    
+        const isEditing = !experience.isEditing;
+    
+        setEditMode(isEditing);
+    
+        if (isEditing) {
+            setPosition(experience.position);
+            setCompany(experience.company);
+            setStartDateExperiences(experience.startDateExperiences);
+            setEndDateExperiences(experience.endDateExperiences);
+            setDescriptionExperiences(experience.descriptionExperiences);
         } else {
-            experience.isEditing = true
-            setEditMode(true)
+
+            setPosition('');
+            setCompany('');
+            setStartDateExperiences('');
+            setEndDateExperiences('');
+            setDescriptionExperiences('');
+    
+            const updatedExperience = {
+                position, 
+                company, 
+                startDateExperiences, 
+                endDateExperiences, 
+                descriptionExperiences,
+                isEditing: false, 
+            };
+    
+            setExperiences(prev =>
+                prev.map(exp =>
+                    exp.position === experience.position ? updatedExperience : exp
+                )
+            );
         }
+    
+        setExperiences(prev =>
+            prev.map(exp =>
+                exp.position === experience.position ? { ...exp, isEditing } : exp
+            )
+        );
+    };
+    
 
-        setExperiences(prev => prev.map(exp => exp.position === experience.position ? experience : exp))
-
-        experiences.map((experience) => {
-            {experience.isEditing === true ? console.log('editing') : console.log('done')}
-        })
-        console.log(experiences)
-        console.log(editMode)
-
-    }
     return (
         experiences.map((experience) => (
-                <div key={experience.position}>
+                <div key={experience.position} className='currentExperiences'>
                 {experience.position}
                 
                 {!editMode ? 
                 (
                     <>
-                        <button 
-                            onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className={experience.position}>{experience.isEditing === false ? 'Edit' : 'Done'}
+                    <div className="buttonContainer">
+                        <button
+                            onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className='modify'>Edit
                         </button>
                         <button 
-                            onClick={(event) => DeleteExperience(event, experiences, experience, setExperiences)} key={experience.position} className={experience.position}>X
+                            onClick={(event) => DeleteExperience(event, experiences, experience, setExperiences)} key={experience.position} className='modify'>X
                         </button>
+                    </div>
                     </>
                 ) 
                 : (
@@ -77,7 +97,7 @@ function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompa
                     (
                         <>
                             <button 
-                                onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className={experience.position}>{experience.isEditing === false ? 'Edit' : 'Done'}
+                                onClick={(event) => EditExperience(event, experience, setExperiences, editMode, setEditMode)} className='modify'>Done
                             </button>
                         </>
                     )   
@@ -86,8 +106,108 @@ function ShowExperiencesForm({experiences, setExperiences, setPosition, setCompa
         ))
     )}
 
+    function ShowEducationsForm({educations, setEducations, setEducationLevel, setInstitute, setStartDateEducation, setEndDateEducation, setDescriptionEducation, editMode, setEditMode, educationLevel, institute, startDateEducation, endDateEducation, descriptionEducation, other, setOther, setIsOther}) {
+
+        const DeleteEducation = (event, educations, education, setEducations) => {
+            event.preventDefault()
+        
+            const newEducation = educations.filter(ed => ed !== education)
+        
+            setEducations(newEducation)
+    
+            setEducationLevel('')
+            setInstitute('')
+            setStartDateEducation('')
+            setEndDateEducation('')
+            setDescriptionEducation('')
+        
+        }
+        
+        const EditEducation = (event, education) => {
+            event.preventDefault();
+        
+            const isEditing = !education.isEditing;
+        
+            setEditMode(isEditing);
+        
+            if (isEditing) {
+                setEducationLevel(education.educationLevel);
+                setInstitute(education.institute);
+                setStartDateEducation(education.startDateEducation);
+                setEndDateEducation(education.endDateEducation);
+                setDescriptionEducation(education.descriptionEducation);
+            } else {
+
+                const finalEducationLevel = educationLevel === 'other' ? other : educationLevel;
+
+    
+                setEducationLevel('')
+                setInstitute('')
+                setStartDateEducation('')
+                setEndDateEducation('')
+                setDescriptionEducation('')
+        
+                const updatedEducation = {
+                    educationLevel: finalEducationLevel, 
+                    institute, 
+                    startDateEducation, 
+                    endDateEducation, 
+                    descriptionEducation,
+                    isEditing: false, 
+                };
+
+                console.log(updatedEducation)
+                console.log(education)
+        
+                setEducations(prev =>
+                    prev.map(ed =>
+                        ed.educationLevel === education.educationLevel ? updatedEducation : ed
+                    )
+                );
+            }
+        
+            setEducations(prev =>
+                prev.map(ed =>
+                    ed.educationLevel === education.educationLevel ? { ...ed, isEditing } : ed
+                )
+            );
+        };
+        
+    
+        return (
+            educations.map((education) => (
+                    <div key={education.institute} className='currentEducations'>
+                    {education.educationLevel}
+                    
+                    {!editMode ? 
+                    (
+                        <>
+                            <div className="buttonContainer">
+                                <button 
+                                    onClick={(event) => EditEducation(event, education, setEducations, editMode, setEditMode)} className='modify'>Edit
+                                </button>
+                                <button 
+                                    onClick={(event) => DeleteEducation(event, educations, education, setEducations)} key={education.institute} className='modify'>X
+                                </button>
+                            </div>
+                        </>
+                    ) 
+                    : (
+                        education.isEditing && 
+                        (
+                            <>
+                                <button 
+                                    onClick={(event) => EditEducation(event, education, setEducations, editMode, setEditMode)} className='modify'>Done
+                                </button>
+                            </>
+                        )   
+                    )}
+                </div>
+            ))
+        )}
+
 // eslint-disable-next-line react/prop-types
-export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription, onExperience, experiences, setExperiences}) {
+export default function FormSection({firstName, setFirstName, surname, setSurname, number, setNumber, email, setEmail, city, setCity, town, setTown, occupation, setOccupation, jobDescription, setJobDescription, onExperience, experiences, setExperiences, onEducation, educations, setEducations}) {
     
         const [position, setPosition] = useState('');
         const [company, setCompany] = useState('');
@@ -100,6 +220,20 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
         const [startDateEducation, setStartDateEducation] = useState('');
         const [endDateEducation, setEndDateEducation] = useState('');
         const [descriptionEducation, setDescriptionEducation] = useState('');
+        const [isOther, setIsOther] = useState(false)
+        const [other, setOther] = useState('')
+
+        const checkEducation = (value) => {
+            console.log(value)
+            if (value === 'other') {
+                setIsOther(true)
+                setEducationLevel(value)
+
+            } else {
+                setEducationLevel(value)
+                setIsOther(false)
+            }
+        }
 
         const [editMode, setEditMode] = useState(false)
 
@@ -107,6 +241,7 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
     const HandleExperiences = (event) => {
         event.preventDefault()
 
+        if (!editMode) {
             const newExperience = {
                 position, 
                 company, 
@@ -115,33 +250,65 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                 descriptionExperiences,
                 isEditing: false,
             }
-            onExperience(newExperience)
 
+            console.log(newExperience)
+            onExperience(newExperience)
+    
             setPosition('')
             setCompany('')
             setStartDateExperiences('')
             setEndDateExperiences('')
             setDescriptionExperiences('')
-            console.log(editMode)
+        }
+
+        console.log(experiences)
+
     }
 
 
     const HandleEducation = (event) => {
+        console.log(`educationLevel = ${educationLevel}`)
+        console.log(`other = ${other}`)
         event.preventDefault()
-        console.log({
-            educationLevel,
-            institute,
-            startDateEducation,
-            endDateEducation,
-            descriptionEducation,
-        })
+
+        const finalEducationLevel = educationLevel === 'other' ? other : educationLevel;
+
+
+        if (!educationLevel) {
+            return null
+        }
+
+        if (!editMode) {
+            const newEducation = {
+                educationLevel: finalEducationLevel, 
+                institute, 
+                startDateEducation, 
+                endDateEducation, 
+                descriptionEducation,
+                isEditing: false,
+            }
+
+            console.log(newEducation)
+            console.log(educations)
+
+            onEducation(newEducation)
+
+            setEducationLevel('')
+            setInstitute('')
+            setStartDateEducation('')
+            setEndDateEducation('')
+            setDescriptionEducation('')
+            setOther('')
+    
+        }
+        console.log(educations)
     }
 
     return (
         <>
         <div className="form-section">
 
-            <div className='fill-out'>FILL OUT</div>
+            <div className='fill-out'>Fill out your information here:</div>
 
             <form action='#' method='get' className='personal-info-container'>
                 <div className='personal-info-title'>Personal Information</div>
@@ -176,10 +343,16 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                     <Input name='startDateExperience' text='Start date' type='date' setter={setStartDateExperiences} value={startDateExperiences}></Input>
                     <Input name='endDateExperience' text='End date' type='date' setter={setEndDateExperiences} value={endDateExperiences}></Input>
                     <Input name='descriptionExperience' text='Description' type='text' setter={setDescriptionExperiences} value={descriptionExperiences}></Input>
-                    <button type='submit' className='submitExperience'>Submit experience</button>
+                    {!editMode ? <button type='submit' className='submitExperience'>Submit experience</button> : null}                    
+                </div>
                     <ShowExperiencesForm 
+                    position={position}
+                    company={company}
+                    startDateExperiences={startDateExperiences}
+                    endDateExperiences={endDateExperiences}
+                    descriptionExperiences={descriptionExperiences}
                     experiences={experiences} 
-                    setExperiences={setExperiences} 
+                    setExperiences={setExperiences}
                     setPosition={setPosition} 
                     setCompany={setCompany} 
                     setStartDateExperiences={setStartDateExperiences} 
@@ -187,7 +360,6 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                     setDescriptionExperiences={setDescriptionExperiences}
                     editMode={editMode}
                     setEditMode={setEditMode}/>
-                </div>
                 <hr />
             </form>
 
@@ -199,23 +371,42 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
 
                 <div className='educationLevelInput'>
                     <label htmlFor='educationLevel'>Level of education</label>
-                    <select name="educationLevel" id="educationLevel" onChange={setEducationLevel}>
+                    <select name="educationLevel" id="educationLevel" onChange={(event) => checkEducation(event.target.value)} value={educationLevel}>
                         <option value="choose-option">--Choose an option--</option>
-                        <option value="high-school">GCSE &#40;or equivalent&#41;</option>
-                        <option value="college">A-levels &#40;or equivalent&#41;</option>
-                        <option value="bachelors">Bachelors degree</option>
-                        <option value="masters">Masters degree</option>
-                        <option value="phd">Phd</option>
+                        <option value="GCSE's">GCSE</option>
+                        <option value="A-levels">A-levels</option>
+                        <option value="Bachelors degree">Bachelors degree</option>
+                        <option value="Masters degree">Masters degree</option>
+                        <option value="Phd">Phd</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
-
-                    <Input name='institute' type='text' setter={setInstitute}></Input>
-                    <Input name='startDateEducation' text='Start date' type='date' setter={setStartDateEducation}></Input>
-                    <Input name='endDateEducation' text='End date' type='date' setter={setEndDateEducation}></Input>
-                    <Input name='descriptionEducation' text='Description' type='text' setter={setDescriptionEducation}></Input>
-                    <button type='submit' className='submitEducation'>Submit education</button>
+                    {isOther ? <Input name={'other'} type={'text'} setter={setOther} value={other}></Input> : null}
+                    <Input name='institute' type='text' setter={setInstitute} value={institute}></Input>
+                    <Input name='startDateEducation' text='Start date' type='date' setter={setStartDateEducation} value={startDateEducation}></Input>
+                    <Input name='endDateEducation' text='End date' type='date' setter={setEndDateEducation} value={endDateEducation}></Input>
+                    <Input name='descriptionEducation' text='Description' type='text' setter={setDescriptionEducation} value={descriptionEducation}></Input>
+                    {!editMode ? <button type='submit' className='submitEducation'>Submit education</button> : null}                    
                 </div>
+                    <ShowEducationsForm
+                    educations={educations} 
+                    setEducations={setEducations}
+                    educationLevel={educationLevel}
+                    institute={institute} 
+                    startDateEducation={startDateEducation} 
+                    endDateEducation={endDateEducation} 
+                    descriptionEducation={descriptionEducation} 
+                    other={other}
+                    setEducationLevel={setEducationLevel} 
+                    setInstitute={setInstitute} 
+                    setStartDateEducation={setStartDateEducation} 
+                    setEndDateEducation={setEndDateEducation}
+                    setDescriptionEducation={setDescriptionEducation}
+                    setOther={setOther}
+                    setIsOther={setIsOther}
+                    editMode={editMode}
+                    setEditMode={setEditMode}
+                    />
             </form>
         </div>
         </>
