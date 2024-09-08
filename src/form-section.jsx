@@ -307,9 +307,6 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
     return (
         <>
         <div className="form-section">
-
-            <div className='fill-out'>Fill out your information here:</div>
-
             <form action='#' method='get' className='personal-info-container'>
                 <div className='personal-info-title'>Personal Information</div>
 
@@ -330,7 +327,10 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
 
                 <div className="current-job-inputs">
                     <Input name='currentJob' text='Current occupation' type='text' value={occupation} setter={setOccupation}></Input>
-                    <Input name='jobDescription' text='Job description' type='text' value={jobDescription} setter={setJobDescription}></Input>
+                    <div className="jobDescriptionInput">
+                        <label htmlFor='jobDescription'>Job description</label>
+                        <textarea rows='3' className='jobDescription' value={jobDescription} onChange={(event) => setJobDescription(event.target.value)}></textarea>
+                    </div>
                 </div>
                 <hr />
             </form>
@@ -342,7 +342,10 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                     <Input name='company' type='text' setter={setCompany} value={company}></Input>
                     <Input name='startDateExperience' text='Start date' type='date' setter={setStartDateExperiences} value={startDateExperiences}></Input>
                     <Input name='endDateExperience' text='End date' type='date' setter={setEndDateExperiences} value={endDateExperiences}></Input>
-                    <Input name='descriptionExperience' text='Description' type='text' setter={setDescriptionExperiences} value={descriptionExperiences}></Input>
+                    <div className="descriptionExperienceInput">
+                        <label htmlFor='descriptionExperience'>Description</label>
+                        <textarea rows='3' className='descriptionExperience' value={descriptionExperiences} onChange={(event) => setDescriptionExperiences(event.target.value)}></textarea>
+                    </div>
                     {!editMode ? <button type='submit' className='submitExperience'>Submit experience</button> : null}                    
                 </div>
                     <ShowExperiencesForm 
@@ -385,7 +388,10 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                     <Input name='institute' type='text' setter={setInstitute} value={institute}></Input>
                     <Input name='startDateEducation' text='Start date' type='date' setter={setStartDateEducation} value={startDateEducation}></Input>
                     <Input name='endDateEducation' text='End date' type='date' setter={setEndDateEducation} value={endDateEducation}></Input>
-                    <Input name='descriptionEducation' text='Description' type='text' setter={setDescriptionEducation} value={descriptionEducation}></Input>
+                    <div className="descriptionEducationInput">
+                        <label htmlFor='descriptionEducation'>Description</label>
+                        <textarea rows='3' className='descriptionEducation' value={descriptionEducation} onChange={(event) => startDateEducation(event.target.value)}></textarea>
+                    </div>
                     {!editMode ? <button type='submit' className='submitEducation'>Submit education</button> : null}                    
                 </div>
                     <ShowEducationsForm

@@ -33,11 +33,17 @@
 .header {
     padding-left: 0;
     margin-top: 2em;
+    color: navy;
+}
+
+.header:hover {
+    color: #42A5F5;
 }
 
 .listItem {
     padding: 1em;
     font-size: 16px;
+    color: black;
 }
 
 .date {
