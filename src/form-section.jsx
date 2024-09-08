@@ -390,7 +390,7 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
                     <Input name='endDateEducation' text='End date' type='date' setter={setEndDateEducation} value={endDateEducation}></Input>
                     <div className="descriptionEducationInput">
                         <label htmlFor='descriptionEducation'>Description</label>
-                        <textarea rows='3' className='descriptionEducation' value={descriptionEducation} onChange={(event) => startDateEducation(event.target.value)}></textarea>
+                        <textarea rows='3' className='descriptionEducation' value={descriptionEducation} onChange={(event) => setDescriptionEducation(event.target.value)}></textarea>
                     </div>
                     {!editMode ? <button type='submit' className='submitEducation'>Submit education</button> : null}                    
                 </div>
