@@ -5,7 +5,7 @@ import { useState } from 'react';
 // eslint-disable-next-line react/prop-types
 function Input({name, text, type, value, setter}) {
     return (
-        <div className={`${name}Input`}>
+        <div className={`${name}Input`, 'input'}>
             <label htmlFor={name}>{text ? text : `${name[0].toUpperCase()}${name.slice(1)}`}</label>
             <input required type={type} id={name} name={name} value={value} onChange={(event) => setter(event.target.value)}/>
         </div>
@@ -267,8 +267,7 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
 
 
     const HandleEducation = (event) => {
-        console.log(`educationLevel = ${educationLevel}`)
-        console.log(`other = ${other}`)
+
         event.preventDefault()
 
         const finalEducationLevel = educationLevel === 'other' ? other : educationLevel;
@@ -372,7 +371,7 @@ export default function FormSection({firstName, setFirstName, surname, setSurnam
 
                 <div className="education-inputs">
 
-                <div className='educationLevelInput'>
+                <div className='educationLevelInput input'>
                     <label htmlFor='educationLevel'>Level of education</label>
                     <select name="educationLevel" id="educationLevel" onChange={(event) => checkEducation(event.target.value)} value={educationLevel}>
                         <option value="choose-option">--Choose an option--</option>

@@ -64,17 +64,24 @@ export default function CvSection({firstName, surname, number, email, city, town
                 <Information class='location' text={`${city}, ${town}`}></Information>
             </div>
 
-            <div className="current-occupation">
-                <Information class='header' text={occupation}></Information>
-                <Information class='job-description' text={jobDescription}></Information>
-            </div>
 
-            <ul className="header">Experience
-                <ShowExperiencesCV experiences={experiences}/>
-            </ul>
-            <ul className="header">Education
-               <ShowEducationCV educations={educations}/>
-            </ul>
+            <div className="information-container">
+                <div className="current-occupation">
+                    <Information class='header' text={occupation}></Information>
+                    <Information class='job-description' text={jobDescription}></Information>
+                </div>
+
+                <div className='experience-container-cv'>
+                    <ul className="header">Experience
+                        <ShowExperiencesCV experiences={experiences}/>
+                    </ul>
+                </div>
+                <div className='education-container-cv'>
+                    <ul className="header">Education
+                    <ShowEducationCV educations={educations}/>
+                    </ul>
+                </div>
+            </div>
         </div>
     )
 }

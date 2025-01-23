@@ -1,7 +1,7 @@
 .cv-section {
     font-size: 30px;
     flex: 2;
-    padding: 0 6em 0 6em;
+    padding: 0 4em 0 4em;
     overflow: auto;
 }
 
@@ -31,9 +31,13 @@
 }
 
 .header {
-    padding-left: 0;
-    margin-top: 2em;
     color: navy;
+    font-size: 0.75em;
+}
+
+.ul {
+    font-size: 0.75em;
+    padding: 0;
 }
 
 .header:hover {
@@ -41,8 +45,7 @@
 }
 
 .listItem {
-    padding: 1em;
-    font-size: 16px;
+
     color: black;
 }
 
@@ -61,4 +64,20 @@
 
 li > div {
     margin-top: 0.3em;
+}
+
+.experience-container-cv, .education-container-cv, .current-occupation {
+    padding: 0.25em;
+    border: solid 1px navy;
+    border-radius: 30px;
+}
+
+.information-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.current-occupation {
+    padding: 0.75em;
 }

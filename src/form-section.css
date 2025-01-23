@@ -115,3 +115,26 @@ hr {
     color: #42A5F5
     
 }
+
+@media (max-width:1200px) {
+    .personal-info-title, .experience-title, .education-title {
+        font-size: 1.5em;
+        text-align: center;
+    }
+    .currentExperiences, .currentEducations {
+        font-size: 1em;
+    }
+    .modify {
+        padding: 2px;
+    }
+    .submitEducation, .submitExperience {
+        padding: 2px;
+    }
+    .currentExperiences, .currentEducations {
+        display: flex;
+        flex-direction: column;
+    }
+    .input {
+        text-align: center;
+    }
+}
